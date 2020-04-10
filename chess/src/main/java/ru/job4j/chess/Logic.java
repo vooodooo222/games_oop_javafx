@@ -25,13 +25,34 @@ public class Logic {
         boolean rst = false;
         int index = this.findBy(source);
         if (index != -1) {
-            Cell[] steps = this.figures[index].way(source, dest);
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                rst = true;
-                this.figures[index] = this.figures[index].copy(dest);
+            try {
+                Cell[] steps = this.figures[index].way(source, dest);
+                if (isWayFree(steps) && steps[steps.length - 1].equals(dest)) {
+                    rst = true;
+                    this.figures[index] = this.figures[index].copy(dest);
+                }
+            } catch (RuntimeException e) {
+                e.printStackTrace();
             }
         }
         return rst;
+    }
+
+    public boolean isWayFree(Cell[] steps) {
+        boolean rsl = steps.length > 0;
+        for (Cell step : steps) {
+            for (Figure figure : this.figures)
+            {
+                if (figure != null && figure.position().equals(step)) {
+                    rsl = false;
+                    break;
+                }
+            }
+            if (!rsl) {
+                break;
+            }
+        }
+        return rsl;
     }
 
     public void clean() {
