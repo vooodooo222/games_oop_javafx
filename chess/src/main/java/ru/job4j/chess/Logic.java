@@ -41,14 +41,8 @@ public class Logic {
     public boolean isWayFree(Cell[] steps) {
         boolean rsl = steps.length > 0;
         for (Cell step : steps) {
-            for (Figure figure : this.figures)
-            {
-                if (figure != null && figure.position().equals(step)) {
-                    rsl = false;
-                    break;
-                }
-            }
-            if (!rsl) {
+            if (findBy(step) != -1) {
+                rsl = false;
                 break;
             }
         }
